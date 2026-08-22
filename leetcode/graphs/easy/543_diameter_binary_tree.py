@@ -1,5 +1,9 @@
-from leetcode.graphs.models import TreeNode
+import pytest
 
+from leetcode.graphs.models import TreeNode
+from leetcode.graphs.utils import build_tree
+
+# Bottom-up DFS: track best left+right while computing heights - Time: O(n), Space: O(h)
 def diameter_of_binary_tree(root: TreeNode) -> int:
     best = 0
 
@@ -15,3 +19,16 @@ def diameter_of_binary_tree(root: TreeNode) -> int:
 
     height(root)
     return best
+
+
+@pytest.mark.parametrize(
+    ("values", "expected"),
+    [
+        ([1, 2, 3, 4, 5], 3),
+        ([1, 2], 1),
+        ([1], 0),
+        ([], 0),
+    ],
+)
+def test_diameter(values, expected):
+    assert diameter_of_binary_tree(build_tree(values)) == expected

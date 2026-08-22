@@ -1,0 +1,18 @@
+[project]
+name = "leetcode"
+version = "0.1.0"
+description = "LeetCode practice: each solution module contains its own pytest tests"
+requires-python = ">=3.10"
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["leetcode"]
+python_files = ["*.py"]
+addopts = "--import-mode=importlib"
+pythonpath = ["."]

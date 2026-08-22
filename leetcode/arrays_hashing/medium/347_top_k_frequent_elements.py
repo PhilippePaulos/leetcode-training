@@ -1,20 +1,21 @@
 import heapq
 from collections import Counter
 
+import pytest
 
-# O(n log n)
+
+# Sort all by frequency - Time: O(n log n), Space: O(n)
 def top_k_frequent(nums: list[int], k: int) -> list[int]:
     counts = Counter(nums)
     return [num for num, _ in sorted(counts.items(), key=lambda item: item[1], reverse=True)[:k]]
 
-# O(n log k)
+# Heap via nlargest - Time: O(n log k), Space: O(n)
 def top_k_frequent_2(nums: list[int], k: int) -> list[int]:
     counts = Counter(nums)
     return heapq.nlargest(k, counts, key=counts.get)
 
-# O(n) #
-# Uses bucket sorting
-# Values to sort are in a known interval, use them as a position of a list instead of comparing them
+# Bucket sort - Time: O(n), Space: O(n)
+# Frequencies are in a known interval [1, n]: use them as list indices instead of comparing them
 def top_k_frequent_optimized(nums: list[int], k: int) -> list[int]:
     counts = Counter(nums)
     buckets: list[list[int]] = [[] for _ in range(len(nums) + 1)]
@@ -30,7 +31,16 @@ def top_k_frequent_optimized(nums: list[int], k: int) -> list[int]:
     return result
 
 
-if __name__ == "__main__":
-    nums = [1, 2, 2, 3, 3, 3]
-    k = 2
-    print(top_k_frequent_2(nums, k))
+@pytest.mark.parametrize("solve", [top_k_frequent, top_k_frequent_2, top_k_frequent_optimized])
+@pytest.mark.parametrize(
+    ("nums", "k", "expected"),
+    [
+        ([1, 1, 1, 2, 2, 3], 2, {1, 2}),
+        ([1], 1, {1}),
+        ([4, 4, 4, 5, 5, 6], 2, {4, 5}),
+    ],
+)
+def test_top_k_frequent(solve, nums, k, expected):
+    result = solve(nums, k)
+    assert len(result) == k
+    assert set(result) == expected

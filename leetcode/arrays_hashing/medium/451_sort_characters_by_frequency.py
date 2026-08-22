@@ -1,6 +1,7 @@
 from collections import Counter
 
 
+# Bucket sort by frequency - Time: O(n), Space: O(n)
 def sort_characters_by_frequency(s: str) -> str:
     counts = Counter(s)
     buckets = [[] for _ in range(len(s) + 1)]
@@ -13,5 +14,3 @@ def sort_characters_by_frequency(s: str) -> str:
             parts.append(char * freq)
     return "".join(parts)
 
-if __name__ == "__main__":
-    print(sort_characters_by_frequency("tree"))

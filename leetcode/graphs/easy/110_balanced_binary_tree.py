@@ -1,4 +1,7 @@
+import pytest
+
 from leetcode.graphs.models import TreeNode
+from leetcode.graphs.utils import build_tree
 
 
 def max_length(node: TreeNode):
@@ -9,6 +12,7 @@ def max_length(node: TreeNode):
 
     return 1 + max(left, right)
 
+# Top-down: recomputes heights at every node - Time: O(n^2) worst case, Space: O(h)
 def balance_of_binary_tree(root: TreeNode) -> bool:
 
     def is_balanced(node: TreeNode) -> bool:
@@ -22,6 +26,7 @@ def balance_of_binary_tree(root: TreeNode) -> bool:
 
     return is_balanced(root)
 
+# Bottom-up with -1 sentinel: each node visited once - Time: O(n), Space: O(h)
 def balance_of_binary_tree_sentinel(root: TreeNode) -> bool:
 
     def height(node: TreeNode) -> int:
@@ -42,3 +47,17 @@ def balance_of_binary_tree_sentinel(root: TreeNode) -> bool:
         return 1 + max(left, right)
 
     return height(root) != -1
+
+
+@pytest.mark.parametrize("solve", [balance_of_binary_tree, balance_of_binary_tree_sentinel])
+@pytest.mark.parametrize(
+    ("values", "expected"),
+    [
+        ([3, 9, 20, None, None, 15, 7], True),
+        ([1, 2, 2, 3, 3, None, None, 4, 4], False),
+        ([], True),
+        ([1], True),
+    ],
+)
+def test_is_balanced(solve, values, expected):
+    assert solve(build_tree(values)) is expected
