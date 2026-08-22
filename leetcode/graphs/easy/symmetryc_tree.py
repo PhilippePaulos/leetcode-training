@@ -1,13 +1,7 @@
 from collections import deque
 from typing import Optional
 
-
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-
+from leetcode.graphs.utils import build_tree
 
 def is_symmetric(root: Optional[TreeNode]) -> bool:
 
@@ -43,25 +37,6 @@ def is_symmetric_iterative(root: Optional[TreeNode]) -> bool:
         queue.append((left.right, right.left))
 
     return True
-
-
-def build_tree(level_vals):
-    """
-    Build a binary tree from a level-order list.
-    Use None for missing children.
-    """
-    if not level_vals:
-        return None
-    nodes = [TreeNode(v) if v is not None else None for v in level_vals]
-    kids = nodes[::-1]  # start from the end for pop()
-    root = kids.pop()  # first element is the root
-    for node in nodes:
-        if node:
-            if kids:
-                node.left = kids.pop()
-            if kids:
-                node.right = kids.pop()
-    return root
 
 
 def run_tests():
