@@ -4,15 +4,15 @@ import pytest
 # O(n) complexity & space
 def longest_consecutive(nums: list[int]) -> int:
     values = set(nums)
-    record = 0
+    longest = 0
     for x in values:
         if x-1 not in values:
             end = x
             while end in values:
                 end+=1
-            record = max(end - x, record)
+            longest = max(end - x, longest)
 
-    return record
+    return longest
 
 
 @pytest.mark.parametrize(
